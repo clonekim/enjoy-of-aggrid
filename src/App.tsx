@@ -2,19 +2,21 @@ import React, { useEffect } from "react";
 import useGrid from "./components/useGrid";
 import { Grid } from "./components/Grid";
 
+import './App.css';
+
 function App() {
   const gridOptions = {
-    editable: true
+    editable: true,
   };
 
   const columns = [
-    { headerName: "ID", field: "id", valueFormatter:(params:any) => params.value+ 100 },
+    { headerName: "ID", field: "id"  },
     { headerName: "Color", field: "color", editable: false },
   ];
 
   const datas: any = [
     { id: 1, color: "red" },
-    { id: 1, color: "blue" },
+    { id: 2, color: "blue" },
   ];
 
   const { api, rowData, setRowData } = useGrid(gridOptions);
