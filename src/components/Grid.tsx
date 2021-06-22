@@ -15,8 +15,14 @@ export interface GridProps {
 
 const staticGridOptions = {
   editable: false,
-  resizable: true,
+  resizable: true
 };
+
+const noRowOverlay =() => {
+  return(
+    <div>No Data</div>
+  );
+}
 
 export const Grid: React.FC<GridProps> = ({
   height,
@@ -25,11 +31,12 @@ export const Grid: React.FC<GridProps> = ({
   columns,
   gridOptions = staticGridOptions,
 }: GridProps) => {
+
   const defaultGridOpitons = {
     defaultColDef: {
       editable: (!!gridOptions.editable && gridOptions.editable) || false,
-      resizable: (!!gridOptions.editable && gridOptions.resizable) || true,
-    },
+      resizable: (!!gridOptions.editable && gridOptions.resizable) || true
+    }
   };
 
   const makeColumnDefs = (cols: any[]) => {
@@ -41,12 +48,23 @@ export const Grid: React.FC<GridProps> = ({
   };
 
   const makeGridOptions = () => {
-    return Object.assign({}, defaultGridOpitons, omit(gridOptions, ['editable', 'resizable']));
+    return Object.assign({},
+      defaultGridOpitons,
+      {
+        frameworkComponents: {
+          noRowsOverlay: noRowOverlay
+        }
+      },
+      omit(gridOptions, ['editable', 'resizable']));
   };
 
   return (
     <div className="ag-theme-material" style={{ height: height, width: width }}>
-      <AgGridReact columnDefs={makeColumnDefs(columns)} rowData={rowData} gridOptions={makeGridOptions()}></AgGridReact>
+      <AgGridReact
+        columnDefs={makeColumnDefs(columns)}
+        rowData={rowData}
+        noRowsOverlayComponent={'noRowsOverlay'}
+        gridOptions={makeGridOptions()}></AgGridReact>
     </div>
   );
 };
